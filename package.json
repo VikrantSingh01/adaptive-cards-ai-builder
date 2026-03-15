@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "adaptive-cards-ai-builder": "./dist/server.js"
+    "adaptive-cards-ai-builder": "dist/server.js"
   },
   "exports": {
     ".": {
@@ -42,7 +42,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/VikrantSingh01/adaptive-cards-ai-builder.git"
+    "url": "git+https://github.com/VikrantSingh01/adaptive-cards-ai-builder.git"
   },
   "files": [
     "dist",
