@@ -70,6 +70,21 @@ claude mcp add adaptive-cards-mcp -- npx adaptive-cards-mcp
 }
 ```
 
+**Microsoft 365 Copilot / Copilot Studio:**
+1. Open [Copilot Studio](https://copilotstudio.microsoft.com/) → your agent → Tools → Add a tool → New tool → **Model Context Protocol**
+2. Enter your MCP server URL (requires hosting as a remote HTTP server — see [deployment guide](https://learn.microsoft.com/en-us/microsoft-365-copilot/extensibility/build-mcp-plugins))
+3. Select the tools to expose (generate_card, validate_card, etc.)
+
+> Note: M365 Copilot requires a **remote MCP server** (HTTP/SSE), not local stdio. Deploy to Azure Functions or any HTTPS endpoint.
+
+**OpenAI ChatGPT:**
+1. Enable [Developer mode](https://help.openai.com/en/articles/12584461-developer-mode-apps-and-full-mcp-connectors-in-chatgpt-beta) in ChatGPT settings
+2. Go to Settings → Connectors → Create
+3. Enter your MCP server HTTPS URL
+4. ChatGPT discovers the 7 tools automatically
+
+> Note: ChatGPT requires a **remote MCP server** over HTTPS. See [OpenAI MCP docs](https://developers.openai.com/api/docs/mcp/).
+
 **Any MCP client (stdio):**
 ```bash
 npx adaptive-cards-mcp
