@@ -19,6 +19,10 @@ export {
 export { handleGenerateCard as generateCard } from "./tools/generate-card.js";
 export { handleValidateCard as validateCardFull } from "./tools/validate-card.js";
 export { handleDataToCard as dataToCard } from "./tools/data-to-card.js";
+export { handleOptimizeCard as optimizeCard } from "./tools/optimize-card.js";
+export { handleTemplateCard as templateCard } from "./tools/template-card.js";
+export { handleTransformCard as transformCard } from "./tools/transform-card.js";
+export { handleSuggestLayout as suggestLayout } from "./tools/suggest-layout.js";
 
 // Generation utilities
 export { assembleCard } from "./generation/card-assembler.js";

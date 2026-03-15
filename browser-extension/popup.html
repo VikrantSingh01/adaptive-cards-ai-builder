@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adaptive Cards AI Builder</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { width: 360px; font-family: 'Segoe UI', -apple-system, sans-serif; background: #1e1e1e; color: #e0e0e0; padding: 16px; }
+    h1 { font-size: 16px; margin-bottom: 4px; color: #fff; }
+    .subtitle { font-size: 11px; color: #888; margin-bottom: 16px; }
+    .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #888; margin-bottom: 4px; }
+    textarea { width: 100%; min-height: 60px; background: #2d2d2d; border: 1px solid #444; border-radius: 6px; color: #e0e0e0; padding: 8px; font-family: inherit; font-size: 12px; resize: vertical; }
+    textarea:focus { outline: none; border-color: #0078d4; }
+    .row { display: flex; gap: 8px; margin: 8px 0; }
+    .row > * { flex: 1; }
+    select { width: 100%; background: #2d2d2d; border: 1px solid #444; border-radius: 6px; color: #e0e0e0; padding: 6px 8px; font-size: 12px; }
+    .btn { width: 100%; padding: 10px; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+    .btn-primary { background: #0078d4; color: white; }
+    .btn-primary:hover { background: #106ebe; }
+    .btn-secondary { background: #333; color: #e0e0e0; }
+    .btn-secondary:hover { background: #444; }
+    .output { width: 100%; min-height: 100px; max-height: 200px; background: #1a1a1a; border: 1px solid #333; border-radius: 6px; color: #d4d4d4; padding: 8px; font-family: 'Consolas', monospace; font-size: 11px; overflow-y: auto; margin-top: 8px; white-space: pre; }
+    .status { padding: 6px 10px; border-radius: 6px; font-size: 11px; margin-top: 8px; display: none; }
+    .status.show { display: block; }
+    .status.success { background: rgba(16,124,16,0.2); color: #4ec94e; }
+    .status.error { background: rgba(200,40,40,0.2); color: #f48771; }
+    .link { color: #6cb6ff; text-decoration: none; font-size: 12px; }
+    .link:hover { text-decoration: underline; }
+    .footer { margin-top: 16px; padding-top: 12px; border-top: 1px solid #333; text-align: center; }
+    hr { border: none; border-top: 1px solid #333; margin: 12px 0; }
+  </style>
+</head>
+<body>
+  <h1>&#x2728; Adaptive Cards AI Builder</h1>
+  <p class="subtitle">Generate Adaptive Cards from natural language</p>
+
+  <div class="label">Describe your card</div>
+  <textarea id="input" placeholder="e.g., Create a flight status card for Teams"></textarea>
+
+  <div class="row">
+    <div>
+      <div class="label">Host</div>
+      <select id="host">
+        <option value="generic">Generic</option>
+        <option value="teams" selected>Teams</option>
+        <option value="outlook">Outlook</option>
+        <option value="webchat">Web Chat</option>
+      </select>
+    </div>
+    <div>
+      <div class="label">Intent</div>
+      <select id="intent">
+        <option value="auto">Auto-detect</option>
+        <option value="notification">Notification</option>
+        <option value="approval">Approval</option>
+        <option value="form">Form</option>
+        <option value="dashboard">Dashboard</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" id="generate">&#x2728; Generate</button>
+
+  <div class="output" id="output"></div>
+
+  <button class="btn btn-secondary" id="copy">Copy to Clipboard</button>
+
+  <div class="status" id="status"></div>
+
+  <hr>
+
+  <div class="footer">
+    <a class="link" href="https://adaptivecards.io/designer" target="_blank">Open Adaptive Cards Designer &rarr;</a>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -18,6 +18,10 @@ import {
 import { handleGenerateCard } from "./tools/generate-card.js";
 import { handleValidateCard } from "./tools/validate-card.js";
 import { handleDataToCard } from "./tools/data-to-card.js";
+import { handleOptimizeCard } from "./tools/optimize-card.js";
+import { handleTemplateCard } from "./tools/template-card.js";
+import { handleTransformCard } from "./tools/transform-card.js";
+import { handleSuggestLayout } from "./tools/suggest-layout.js";
 import { initLLMFromEnv } from "./generation/llm-client.js";
 
 // Initialize LLM from environment variables (optional)
@@ -35,6 +39,12 @@ const server = new Server(
     },
   },
 );
+
+// ─── Host enum (shared across tools) ────────────────────────────────────────
+
+const HOST_ENUM = [
+  "teams", "outlook", "webchat", "windows", "viva-connections", "webex", "generic",
+];
 
 // ─── Tool Definitions ────────────────────────────────────────────────────────
 
@@ -57,15 +67,7 @@ const TOOLS = [
         },
         host: {
           type: "string",
-          enum: [
-            "teams",
-            "outlook",
-            "webchat",
-            "windows",
-            "viva-connections",
-            "webex",
-            "generic",
-          ],
+          enum: HOST_ENUM,
           description:
             "Target host app. Generates cards compatible with the host's supported schema version and elements. Default: generic",
         },
@@ -77,16 +79,8 @@ const TOOLS = [
         intent: {
           type: "string",
           enum: [
-            "display",
-            "approval",
-            "form",
-            "notification",
-            "dashboard",
-            "report",
-            "status",
-            "profile",
-            "list",
-            "gallery",
+            "display", "approval", "form", "notification", "dashboard",
+            "report", "status", "profile", "list", "gallery",
           ],
           description:
             "The intent of the card — helps select the best layout pattern",
@@ -112,15 +106,7 @@ const TOOLS = [
         },
         host: {
           type: "string",
-          enum: [
-            "teams",
-            "outlook",
-            "webchat",
-            "windows",
-            "viva-connections",
-            "webex",
-            "generic",
-          ],
+          enum: HOST_ENUM,
           description:
             "Check compatibility with this host app. Default: generic",
         },
@@ -147,15 +133,8 @@ const TOOLS = [
         presentation: {
           type: "string",
           enum: [
-            "auto",
-            "table",
-            "facts",
-            "chart-bar",
-            "chart-line",
-            "chart-pie",
-            "chart-donut",
-            "list",
-            "carousel",
+            "auto", "table", "facts", "chart-bar", "chart-line",
+            "chart-pie", "chart-donut", "list", "carousel",
           ],
           description:
             'Presentation type. "auto" (default) analyzes data shape and picks the best option',
@@ -166,15 +145,7 @@ const TOOLS = [
         },
         host: {
           type: "string",
-          enum: [
-            "teams",
-            "outlook",
-            "webchat",
-            "windows",
-            "viva-connections",
-            "webex",
-            "generic",
-          ],
+          enum: HOST_ENUM,
           description: "Target host app. Default: generic",
         },
         templateMode: {
@@ -184,6 +155,115 @@ const TOOLS = [
         },
       },
       required: ["data"],
+    },
+  },
+  {
+    name: "optimize_card",
+    description:
+      "Optimize an existing Adaptive Card for accessibility, performance, compactness, or modern best practices. Returns the improved card with a detailed list of changes and before/after metrics.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        card: {
+          type: "object",
+          description: "The Adaptive Card JSON object to optimize",
+        },
+        goals: {
+          type: "array",
+          items: {
+            type: "string",
+            enum: ["accessibility", "performance", "compact", "modern", "readability"],
+          },
+          description:
+            'Optimization goals. Default: all. Options: "accessibility" (add altText, labels, wrap, speak), "performance" (flatten nesting, remove empties), "compact" (reduce spacing/padding), "modern" (Action.Execute, v1.6, heading styles), "readability" (separators, spacing)',
+        },
+        host: {
+          type: "string",
+          enum: HOST_ENUM,
+          description: "Target host app for host-specific optimizations",
+        },
+      },
+      required: ["card"],
+    },
+  },
+  {
+    name: "template_card",
+    description:
+      "Convert a static Adaptive Card into an Adaptive Card Template with ${expression} data binding, $data repeaters, and $when conditionals. Returns the template, sample data, expression list, and a binding guide.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        card: {
+          type: "object",
+          description: "A static Adaptive Card to convert into a template. If omitted, provide a description to generate a templated card from scratch.",
+        },
+        dataShape: {
+          type: "object",
+          description: "Optional data shape hint — keys describe the expected data fields",
+        },
+        description: {
+          type: "string",
+          description: "If no card is provided, describe the card to generate as a template",
+        },
+      },
+    },
+  },
+  {
+    name: "transform_card",
+    description:
+      "Transform an Adaptive Card: upgrade/downgrade version, apply host-specific constraints, or flatten nesting. Handles element replacement (e.g., Table→ColumnSet for v1.3, Action.Submit→Action.Execute).",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        card: {
+          type: "object",
+          description: "The Adaptive Card JSON object to transform",
+        },
+        transform: {
+          type: "string",
+          enum: ["upgrade-version", "downgrade-version", "apply-host-config", "flatten"],
+          description: "The type of transformation to apply",
+        },
+        targetVersion: {
+          type: "string",
+          description: 'Target version for upgrade/downgrade (e.g., "1.3", "1.5", "1.6")',
+        },
+        targetHost: {
+          type: "string",
+          enum: HOST_ENUM,
+          description: "Target host for apply-host-config transform",
+        },
+      },
+      required: ["card", "transform"],
+    },
+  },
+  {
+    name: "suggest_layout",
+    description:
+      "Recommend the best Adaptive Card layout pattern for a given description. Returns the suggested pattern with elements, layout rationale, and alternative options — without generating a full card.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        description: {
+          type: "string",
+          description: "Describe the card you want to build — e.g., 'team roster with photos and roles' or 'deployment status dashboard'",
+        },
+        constraints: {
+          type: "object",
+          properties: {
+            interactive: {
+              type: "boolean",
+              description: "Whether the card needs user input/actions",
+            },
+            targetHost: {
+              type: "string",
+              enum: HOST_ENUM,
+              description: "Target host app",
+            },
+          },
+        },
+      },
+      required: ["description"],
     },
   },
 ];
@@ -202,7 +282,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     // MCP clients may send JSON fields as strings — parse them
     const parsed = { ...args } as Record<string, unknown>;
-    for (const key of ["card", "data"]) {
+    for (const key of ["card", "data", "dataShape", "constraints"]) {
       if (typeof parsed[key] === "string") {
         try {
           parsed[key] = JSON.parse(parsed[key] as string);
@@ -211,64 +291,48 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }
       }
     }
+    if (typeof parsed.goals === "string") {
+      try { parsed.goals = JSON.parse(parsed.goals as string); } catch { /* leave */ }
+    }
+
+    let result: unknown;
 
     switch (name) {
-      case "generate_card": {
-        const result = await handleGenerateCard(parsed as any);
-        return {
-          content: [
-            {
-              type: "text" as const,
-              text: JSON.stringify(result, null, 2),
-            },
-          ],
-        };
-      }
-
-      case "validate_card": {
-        const result = handleValidateCard(parsed as any);
-        return {
-          content: [
-            {
-              type: "text" as const,
-              text: JSON.stringify(result, null, 2),
-            },
-          ],
-        };
-      }
-
-      case "data_to_card": {
-        const result = await handleDataToCard(parsed as any);
-        return {
-          content: [
-            {
-              type: "text" as const,
-              text: JSON.stringify(result, null, 2),
-            },
-          ],
-        };
-      }
-
+      case "generate_card":
+        result = await handleGenerateCard(parsed as any);
+        break;
+      case "validate_card":
+        result = handleValidateCard(parsed as any);
+        break;
+      case "data_to_card":
+        result = await handleDataToCard(parsed as any);
+        break;
+      case "optimize_card":
+        result = handleOptimizeCard(parsed as any);
+        break;
+      case "template_card":
+        result = handleTemplateCard(parsed as any);
+        break;
+      case "transform_card":
+        result = handleTransformCard(parsed as any);
+        break;
+      case "suggest_layout":
+        result = handleSuggestLayout(parsed as any);
+        break;
       default:
         return {
-          content: [
-            {
-              type: "text" as const,
-              text: `Unknown tool: ${name}`,
-            },
-          ],
+          content: [{ type: "text" as const, text: `Unknown tool: ${name}` }],
           isError: true,
         };
     }
+
+    return {
+      content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }],
+    };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     return {
-      content: [
-        {
-          type: "text" as const,
-          text: `Error: ${message}`,
-        },
-      ],
+      content: [{ type: "text" as const, text: `Error: ${message}` }],
       isError: true,
     };
   }
@@ -279,7 +343,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("Adaptive Cards AI Builder MCP Server started");
+  console.error("Adaptive Cards AI Builder MCP Server started (7 tools)");
 }
 
 main().catch((error) => {

@@ -1,5 +1,5 @@
 {
-  "name": "@vikrantsingh01/adaptive-cards-ai-builder",
+  "name": "adaptive-cards-ai-builder",
   "version": "1.0.0",
   "description": "AI-powered Adaptive Card generator — MCP server, VS Code extension, and library for converting any content into schema-validated Adaptive Card v1.6 JSON",
   "type": "module",
@@ -45,7 +45,8 @@
     "url": "git+https://github.com/VikrantSingh01/adaptive-cards-ai-builder.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "files": [
     "dist",
