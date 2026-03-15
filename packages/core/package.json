@@ -42,8 +42,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VikrantSingh01/adaptive-cards-ai-builder.git"
+    "url": "git+https://github.com/VikrantSingh01/adaptive-cards-ai-builder.git",
+    "directory": "packages/core"
   },
+  "homepage": "https://github.com/VikrantSingh01/adaptive-cards-ai-builder#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
