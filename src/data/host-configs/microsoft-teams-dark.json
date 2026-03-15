@@ -1,0 +1,657 @@
+{
+    "fontFamily": "Roboto",
+    "supportsInteractivity": true,
+    "imageBaseUrl": "",
+    "spacing": {
+        "extraSmall": 4,
+        "small": 8,
+        "default": 8,
+        "medium": 12,
+        "large": 16,
+        "extraLarge": 20,
+        "padding": 10
+    },
+    "separator": {
+        "lineThickness": 1,
+        "lineColor": "#EEEEEE"
+    },
+    "fontTypes": {
+        "default": {
+            "fontFamily": "Roboto, system-ui, sans-serif",
+            "fontSizes": null,
+            "fontWeights": null
+        },
+        "monospace": {
+            "fontFamily": "Roboto Mono, Courier New, monospace",
+            "fontSizes": null,
+            "fontWeights": null
+        }
+    },
+    "fontSizes": {
+        "small": 12,
+        "default": 14,
+        "medium": 14,
+        "large": 16,
+        "extraLarge": 20
+    },
+    "fontWeights": {
+        "lighter": 400,
+        "default": 400,
+        "bolder": 500
+    },
+    "containerStyles": {
+        "default": {
+            "backgroundColor": "#141414",
+            "borderColor": "#292929",
+            "foregroundColors": {
+                "default": {
+                    "default": "#FFFFFF",
+                    "subtle": "#919191",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "dark": {
+                    "default": "#000000",
+                    "subtle": "#141414",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "light": {
+                    "default": "#FFFFFF",
+                    "subtle": "#E1E1E1",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "accent": {
+                    "default": "#7D84C4",
+                    "subtle": "#8B8CC7",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "good": {
+                    "default": "#92C353",
+                    "subtle": "#217346",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "warning": {
+                    "default": "#D74654",
+                    "subtle": "#4F232B",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "attention": {
+                    "default": "#D74654",
+                    "subtle": "#CF6098",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                }
+            }
+        },
+        "emphasis": {
+            "backgroundColor": "#141414",
+            "borderColor": "#292929",
+            "foregroundColors": {
+                "default": {
+                    "default": "#FFFFFF",
+                    "subtle": "#919191",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "dark": {
+                    "default": "#000000",
+                    "subtle": "#141414",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "light": {
+                    "default": "#FFFFFF",
+                    "subtle": "#E1E1E1",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "accent": {
+                    "default": "#7D84C4",
+                    "subtle": "#8B8CC7",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "good": {
+                    "default": "#92C353",
+                    "subtle": "#217346",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "warning": {
+                    "default": "#D74654",
+                    "subtle": "#4F232B",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "attention": {
+                    "default": "#D74654",
+                    "subtle": "#CF6098",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                }
+            }
+        },
+        "good": {
+            "backgroundColor": "#052505",
+            "borderColor": "#217346",
+            "foregroundColors": {
+                "default": {
+                    "default": "#FFFFFF",
+                    "subtle": "#919191",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "dark": {
+                    "default": "#000000",
+                    "subtle": "#141414",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "light": {
+                    "default": "#FFFFFF",
+                    "subtle": "#E1E1E1",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "accent": {
+                    "default": "#7D84C4",
+                    "subtle": "#8B8CC7",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "good": {
+                    "default": "#92C353",
+                    "subtle": "#217346",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "warning": {
+                    "default": "#D74654",
+                    "subtle": "#4F232B",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "attention": {
+                    "default": "#D74654",
+                    "subtle": "#CF6098",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                }
+            }
+        },
+        "attention": {
+            "backgroundColor": "#3B0509",
+            "borderColor": "#D74654",
+            "foregroundColors": {
+                "default": {
+                    "default": "#FFFFFF",
+                    "subtle": "#919191",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "dark": {
+                    "default": "#000000",
+                    "subtle": "#141414",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "light": {
+                    "default": "#FFFFFF",
+                    "subtle": "#E1E1E1",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "accent": {
+                    "default": "#7D84C4",
+                    "subtle": "#8B8CC7",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "good": {
+                    "default": "#92C353",
+                    "subtle": "#217346",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "warning": {
+                    "default": "#D74654",
+                    "subtle": "#4F232B",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "attention": {
+                    "default": "#D74654",
+                    "subtle": "#CF6098",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                }
+            }
+        },
+        "warning": {
+            "backgroundColor": "#4A3F04",
+            "borderColor": "#C4AB00",
+            "foregroundColors": {
+                "default": {
+                    "default": "#FFFFFF",
+                    "subtle": "#919191",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "dark": {
+                    "default": "#000000",
+                    "subtle": "#141414",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "light": {
+                    "default": "#FFFFFF",
+                    "subtle": "#E1E1E1",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "accent": {
+                    "default": "#7D84C4",
+                    "subtle": "#8B8CC7",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "good": {
+                    "default": "#92C353",
+                    "subtle": "#217346",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "warning": {
+                    "default": "#D74654",
+                    "subtle": "#4F232B",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "attention": {
+                    "default": "#D74654",
+                    "subtle": "#CF6098",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                }
+            }
+        },
+        "accent": {
+            "backgroundColor": "#1A1A3E",
+            "borderColor": "#7D84C4",
+            "foregroundColors": {
+                "default": {
+                    "default": "#FFFFFF",
+                    "subtle": "#919191",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "dark": {
+                    "default": "#000000",
+                    "subtle": "#141414",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "light": {
+                    "default": "#FFFFFF",
+                    "subtle": "#E1E1E1",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "accent": {
+                    "default": "#7D84C4",
+                    "subtle": "#8B8CC7",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "good": {
+                    "default": "#92C353",
+                    "subtle": "#217346",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "warning": {
+                    "default": "#D74654",
+                    "subtle": "#4F232B",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                },
+                "attention": {
+                    "default": "#D74654",
+                    "subtle": "#CF6098",
+                    "highlightColors": {
+                        "default": "#FFFFFF00",
+                        "subtle": "#FFFFFFE0"
+                    }
+                }
+            }
+        }
+    },
+    "imageSizes": {
+        "small": 32,
+        "medium": 52,
+        "large": 100
+    },
+    "actions": {
+        "maxActions": 6,
+        "spacing": "Medium",
+        "buttonSpacing": 8,
+        "showCard": {
+            "actionMode": "inline",
+            "style": "Default",
+            "inlineTopMargin": 8
+        },
+        "actionsOrientation": "horizontal",
+        "actionAlignment": "left",
+        "iconPlacement": "leftOfTitle",
+        "iconSize": 20
+    },
+    "adaptiveCard": {
+        "allowCustomStyle": true
+    },
+    "imageSet": {
+        "imageSize": "Medium",
+        "maxImageHeight": 100
+    },
+    "media": {
+        "defaultPoster": null,
+        "playButton": null,
+        "allowInlinePlayback": true
+    },
+    "factSet": {
+        "title": {
+            "size": "Default",
+            "color": "Default",
+            "isSubtle": false,
+            "weight": "Bolder",
+            "fontType": "Default",
+            "wrap": true,
+            "maxWidth": 0
+        },
+        "value": {
+            "size": "Default",
+            "color": "Default",
+            "isSubtle": false,
+            "weight": "Default",
+            "fontType": "Default",
+            "wrap": true,
+            "maxWidth": 0
+        },
+        "spacing": 32
+    },
+    "inputs": {
+        "label": {
+            "inputSpacing": "Default",
+            "requiredInputs": {
+                "color": "Default",
+                "isSubtle": false,
+                "size": "Default",
+                "suffix": " *",
+                "weight": "Default"
+            },
+            "optionalInputs": {
+                "color": "Default",
+                "isSubtle": true,
+                "size": "Default",
+                "suffix": "",
+                "weight": "Default"
+            }
+        },
+        "errorMessage": {
+            "color": "Attention",
+            "size": "Small",
+            "weight": "Default"
+        }
+    },
+    "hostWidth": {
+        "veryNarrow": 216,
+        "narrow": 413,
+        "standard": 500
+    },
+    "textBlock": {
+        "headingLevel": 2
+    },
+    "textStyles": {
+        "heading": {
+            "weight": "Bolder",
+            "size": "Large",
+            "isSubtle": false,
+            "color": "Default",
+            "fontType": "Default"
+        },
+        "columnHeader": {
+            "weight": "Bolder",
+            "size": "Default",
+            "isSubtle": false,
+            "color": "Default",
+            "fontType": "Default"
+        }
+    },
+    "image": {
+        "imageSize": "Auto"
+    },
+    "ratingLabel": {
+        "filledStar": {
+            "marigoldColor": "#EAA300",
+            "neutralColor": "#E1E1E1"
+        },
+        "emptyStar": {
+            "marigoldColor": "#835B00",
+            "neutralColor": "#404040"
+        },
+        "ratingTextColor": "#E1E1E1",
+        "countTextColor": "#E1E1E1"
+    },
+    "ratingInput": {
+        "filledStar": {
+            "marigoldColor": "#F2C661",
+            "neutralColor": "#E1E1E1"
+        },
+        "emptyStar": {
+            "marigoldColor": "#F2C661",
+            "neutralColor": "#E1E1E1"
+        },
+        "ratingTextColor": "#000000",
+        "countTextColor": "#000000"
+    },
+    "table": {
+        "cellSpacing": 8
+    },
+    "compoundButton": {
+        "badge": {
+            "backgroundColor": "#7F85F5"
+        },
+        "borderColor": "#000000"
+    },
+    "lineHeights": {
+        "small": 16,
+        "default": 18,
+        "medium": 18,
+        "large": 24,
+        "extraLarge": 24
+    },
+    "borderWidth": {
+    },
+    "cornerRadius": {
+        "columnSet": 4,
+        "column": 4,
+        "container": 4,
+        "table": 4,
+        "image": 4
+    },
+    "badgeStyles": {
+        "default": {
+            "filled": {
+                "backgroundColor": "#e1e1e1",
+                "strokeColor": "#e1e1e1",
+                "textColor": "#000000"
+            },
+            "tint": {
+                "backgroundColor": "#919191",
+                "strokeColor": "#919191",
+                "textColor": "#000000"
+            }
+        },
+        "accent": {
+            "filled": {
+                "backgroundColor": "#7f85f5",
+                "strokeColor": "#7f85f5",
+                "textColor": "#000000"
+            },
+            "tint": {
+                "backgroundColor": "#2f2f4a",
+                "strokeColor": "#292929",
+                "textColor": "#7f85f5"
+            }
+        },
+        "attention": {
+            "filled": {
+                "backgroundColor": "#e83a3a",
+                "strokeColor": "#e83a3a",
+                "textColor": "#000000"
+            },
+            "tint": {
+                "backgroundColor": "#250909",
+                "strokeColor": "#292929",
+                "textColor": "#e83a3a"
+            }
+        },
+        "good": {
+            "filled": {
+                "backgroundColor": "#0eb244",
+                "strokeColor": "#0eb244",
+                "textColor": "#000000"
+            },
+            "tint": {
+                "backgroundColor": "#0d2e0d",
+                "strokeColor": "#292929",
+                "textColor": "#0eb244"
+            }
+        },
+        "informative": {
+            "filled": {
+                "backgroundColor": "#292929",
+                "strokeColor": "#292929",
+                "textColor": "#919191"
+            },
+            "tint": {
+                "backgroundColor": "#212121",
+                "strokeColor": "#292929",
+                "textColor": "#919191"
+            }
+        },
+        "subtle": {
+            "filled": {
+                "backgroundColor": "#000000",
+                "strokeColor": "#000000",
+                "textColor": "#e1e1e1"
+            },
+            "tint": {
+                "backgroundColor": "#000000",
+                "strokeColor": "#292929",
+                "textColor": "#e1e1e1"
+            }
+        },
+        "warning": {
+            "filled": {
+                "backgroundColor": "#ffb900",
+                "strokeColor": "#ffb900",
+                "textColor": "#000000"
+            },
+            "tint": {
+                "backgroundColor": "#4d3a0c",
+                "strokeColor": "#292929",
+                "textColor": "#ffb900"
+            }
+        }
+    },
+    "pageControl": {
+        "selectedTintColor": "#7F85F5"
+    }
+}

@@ -1,0 +1,61 @@
+{
+  "name": "adaptive-cards-ai-builder",
+  "version": "1.0.0",
+  "description": "AI-powered Adaptive Card generator — MCP server, VS Code extension, and library for converting any content into schema-validated Adaptive Card v1.6 JSON",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "adaptive-cards-ai-builder": "./dist/server.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./mcp": {
+      "import": "./dist/server.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup && cp -r src/data dist/",
+    "dev": "tsup --watch",
+    "start": "node dist/server.js",
+    "start:mcp": "node dist/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "adaptive-cards",
+    "mcp",
+    "microsoft-teams",
+    "copilot",
+    "card-generator",
+    "ai",
+    "model-context-protocol",
+    "outlook",
+    "bot-framework"
+  ],
+  "author": "Vikrant Singh <msg.vikrant@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VikrantSingh01/adaptive-cards-ai-builder.git"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "ajv": "^8.17.1",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "tsup": "^8.4.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.1.4",
+    "@types/node": "^22.15.17"
+  }
+}

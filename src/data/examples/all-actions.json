@@ -1,0 +1,54 @@
+{
+  "type": "AdaptiveCard",
+  "version": "1.6",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Action Examples",
+      "size": "Large",
+      "weight": "Bolder"
+    },
+    {
+      "type": "ActionSet",
+      "actions": [
+        {
+          "type": "Action.OpenUrl",
+          "title": "Open URL",
+          "url": "https://adaptivecards.io"
+        },
+        {
+          "type": "Action.Submit",
+          "title": "Submit Data",
+          "style": "Positive",
+          "data": {
+            "action": "submit",
+            "value": "test"
+          }
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Toggle Visibility Example",
+      "weight": "Bolder"
+    },
+    {
+      "type": "TextBlock",
+      "id": "hiddenText",
+      "text": "This text can be toggled",
+      "isVisible": false
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.ToggleVisibility",
+      "title": "Toggle Text",
+      "targetElements": [
+        {
+          "elementId": "hiddenText"
+        }
+      ]
+    }
+  ]
+}

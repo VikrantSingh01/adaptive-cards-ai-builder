@@ -1,0 +1,68 @@
+{
+  "type": "AdaptiveCard",
+  "version": "1.6",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "All Input Types",
+      "size": "Large",
+      "weight": "Bolder"
+    },
+    {
+      "type": "Input.Text",
+      "id": "textInput",
+      "label": "Text Input",
+      "placeholder": "Enter text"
+    },
+    {
+      "type": "Input.Number",
+      "id": "numberInput",
+      "label": "Number Input",
+      "placeholder": "Enter number",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "type": "Input.Date",
+      "id": "dateInput",
+      "label": "Date Input"
+    },
+    {
+      "type": "Input.Time",
+      "id": "timeInput",
+      "label": "Time Input"
+    },
+    {
+      "type": "Input.Toggle",
+      "id": "toggleInput",
+      "title": "Toggle Input"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "choiceInput",
+      "label": "Choice Set",
+      "style": "compact",
+      "choices": [
+        {
+          "title": "Option 1",
+          "value": "1"
+        },
+        {
+          "title": "Option 2",
+          "value": "2"
+        },
+        {
+          "title": "Option 3",
+          "value": "3"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Submit All"
+    }
+  ]
+}

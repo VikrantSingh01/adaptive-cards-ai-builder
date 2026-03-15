@@ -1,0 +1,40 @@
+{
+  "type": "AdaptiveCard",
+  "version": "1.6",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Input Form",
+      "size": "Large",
+      "weight": "Bolder"
+    },
+    {
+      "type": "Input.Text",
+      "id": "name",
+      "label": "Name",
+      "placeholder": "Enter your name",
+      "isRequired": true
+    },
+    {
+      "type": "Input.Number",
+      "id": "age",
+      "label": "Age",
+      "placeholder": "Enter your age",
+      "min": 0,
+      "max": 120
+    },
+    {
+      "type": "Input.Toggle",
+      "id": "subscribe",
+      "title": "Subscribe to newsletter",
+      "value": "false"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Submit"
+    }
+  ]
+}

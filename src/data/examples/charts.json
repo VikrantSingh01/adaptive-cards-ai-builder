@@ -1,0 +1,316 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Charts Module Test Card",
+      "size": "ExtraLarge",
+      "weight": "Bolder"
+    },
+    {
+      "type": "TextBlock",
+      "text": "Donut Chart with Title and Legend",
+      "size": "Large",
+      "weight": "Bolder",
+      "spacing": "Large"
+    },
+    {
+      "type": "DonutChart",
+      "id": "donutChart1",
+      "title": "Sales by Region",
+      "size": "medium",
+      "showLegend": true,
+      "innerRadiusRatio": 0.5,
+      "data": [
+        {
+          "label": "North America",
+          "value": 45
+        },
+        {
+          "label": "Europe",
+          "value": 30
+        },
+        {
+          "label": "Asia Pacific",
+          "value": 20
+        },
+        {
+          "label": "Other",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Vertical Bar Chart with Values",
+      "size": "Large",
+      "weight": "Bolder",
+      "spacing": "Large"
+    },
+    {
+      "type": "BarChart",
+      "id": "barChart1",
+      "title": "Monthly Revenue",
+      "size": "medium",
+      "showLegend": false,
+      "showValues": true,
+      "orientation": "vertical",
+      "data": [
+        {
+          "label": "Jan",
+          "value": 1200
+        },
+        {
+          "label": "Feb",
+          "value": 1800
+        },
+        {
+          "label": "Mar",
+          "value": 1500
+        },
+        {
+          "label": "Apr",
+          "value": 2100
+        },
+        {
+          "label": "May",
+          "value": 1900
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Horizontal Bar Chart",
+      "size": "Large",
+      "weight": "Bolder",
+      "spacing": "Large"
+    },
+    {
+      "type": "BarChart",
+      "id": "barChart2",
+      "title": "Product Categories",
+      "size": "small",
+      "showLegend": false,
+      "showValues": true,
+      "orientation": "horizontal",
+      "data": [
+        {
+          "label": "Electronics",
+          "value": 85
+        },
+        {
+          "label": "Clothing",
+          "value": 62
+        },
+        {
+          "label": "Food",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Line Chart with Smooth Curve",
+      "size": "Large",
+      "weight": "Bolder",
+      "spacing": "Large"
+    },
+    {
+      "type": "LineChart",
+      "id": "lineChart1",
+      "title": "Website Traffic",
+      "size": "medium",
+      "showLegend": true,
+      "showDataPoints": true,
+      "smooth": true,
+      "data": [
+        {
+          "label": "Mon",
+          "value": 1200
+        },
+        {
+          "label": "Tue",
+          "value": 1500
+        },
+        {
+          "label": "Wed",
+          "value": 1300
+        },
+        {
+          "label": "Thu",
+          "value": 1800
+        },
+        {
+          "label": "Fri",
+          "value": 2200
+        },
+        {
+          "label": "Sat",
+          "value": 1900
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Pie Chart with Percentages",
+      "size": "Large",
+      "weight": "Bolder",
+      "spacing": "Large"
+    },
+    {
+      "type": "PieChart",
+      "id": "pieChart1",
+      "title": "Market Share",
+      "size": "medium",
+      "showLegend": true,
+      "showPercentages": true,
+      "data": [
+        {
+          "label": "Product A",
+          "value": 35
+        },
+        {
+          "label": "Product B",
+          "value": 25
+        },
+        {
+          "label": "Product C",
+          "value": 20
+        },
+        {
+          "label": "Product D",
+          "value": 12
+        },
+        {
+          "label": "Product E",
+          "value": 8
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Chart with Custom Colors",
+      "size": "Large",
+      "weight": "Bolder",
+      "spacing": "Large"
+    },
+    {
+      "type": "DonutChart",
+      "id": "donutChart2",
+      "title": "Custom Color Palette",
+      "size": "small",
+      "showLegend": true,
+      "innerRadiusRatio": 0.6,
+      "colors": [
+        "#FF6B6B",
+        "#4ECDC4",
+        "#45B7D1",
+        "#FFA07A"
+      ],
+      "data": [
+        {
+          "label": "Category 1",
+          "value": 40
+        },
+        {
+          "label": "Category 2",
+          "value": 30
+        },
+        {
+          "label": "Category 3",
+          "value": 20
+        },
+        {
+          "label": "Category 4",
+          "value": 10
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Large Bar Chart",
+      "size": "Large",
+      "weight": "Bolder",
+      "spacing": "Large"
+    },
+    {
+      "type": "BarChart",
+      "id": "barChart3",
+      "title": "Annual Performance",
+      "size": "large",
+      "showLegend": true,
+      "showValues": false,
+      "orientation": "vertical",
+      "colors": [
+        "#0078D4",
+        "#00BCF2",
+        "#8764B8",
+        "#00B7C3",
+        "#FFB900",
+        "#D83B01"
+      ],
+      "data": [
+        {
+          "label": "Q1",
+          "value": 8500
+        },
+        {
+          "label": "Q2",
+          "value": 9200
+        },
+        {
+          "label": "Q3",
+          "value": 8900
+        },
+        {
+          "label": "Q4",
+          "value": 10500
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Line Chart without Smoothing",
+      "size": "Large",
+      "weight": "Bolder",
+      "spacing": "Large"
+    },
+    {
+      "type": "LineChart",
+      "id": "lineChart2",
+      "title": "Temperature Trend",
+      "size": "small",
+      "showLegend": false,
+      "showDataPoints": true,
+      "smooth": false,
+      "data": [
+        {
+          "label": "6am",
+          "value": 18
+        },
+        {
+          "label": "9am",
+          "value": 22
+        },
+        {
+          "label": "12pm",
+          "value": 28
+        },
+        {
+          "label": "3pm",
+          "value": 30
+        },
+        {
+          "label": "6pm",
+          "value": 25
+        },
+        {
+          "label": "9pm",
+          "value": 20
+        }
+      ]
+    }
+  ]
+}

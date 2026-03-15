@@ -1,0 +1,242 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Microsoft Adaptive Card Schema v1.6",
+  "description": "JSON Schema definition for Adaptive Cards v1.6 - Official Microsoft Teams compatible schema",
+  "required": ["type", "version"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "The schema URI for validation"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["AdaptiveCard"],
+      "description": "Must be AdaptiveCard"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$",
+      "description": "Schema version (e.g., 1.6)"
+    },
+    "body": {
+      "type": "array",
+      "description": "The card elements to render",
+      "items": {
+        "$ref": "#/definitions/CardElement"
+      }
+    },
+    "actions": {
+      "type": "array",
+      "description": "Actions to show at the bottom of the card",
+      "items": {
+        "$ref": "#/definitions/Action"
+      }
+    },
+    "selectAction": {
+      "$ref": "#/definitions/Action",
+      "description": "An action that gets executed when the card is tapped"
+    },
+    "fallbackText": {
+      "type": "string",
+      "description": "Text shown when client doesn't support the card"
+    },
+    "backgroundImage": {
+      "oneOf": [
+        { "type": "string" },
+        { "$ref": "#/definitions/BackgroundImage" }
+      ]
+    },
+    "minHeight": {
+      "type": "string",
+      "description": "Minimum height of the card (v1.6)"
+    },
+    "speak": {
+      "type": "string",
+      "description": "Text to be spoken for accessibility"
+    },
+    "lang": {
+      "type": "string",
+      "description": "RFC 5646 language code"
+    },
+    "verticalContentAlignment": {
+      "type": "string",
+      "enum": ["top", "center", "bottom"]
+    }
+  },
+  "definitions": {
+    "CardElement": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "TextBlock",
+            "Image",
+            "Media",
+            "RichTextBlock",
+            "Container",
+            "ColumnSet",
+            "ImageSet",
+            "FactSet",
+            "ActionSet",
+            "Table",
+            "Input.Text",
+            "Input.Number",
+            "Input.Date",
+            "Input.Time",
+            "Input.Toggle",
+            "Input.ChoiceSet",
+            "Carousel",
+            "Accordion",
+            "CodeBlock",
+            "Rating",
+            "Input.Rating",
+            "ProgressBar",
+            "Spinner",
+            "TabSet",
+            "List",
+            "CompoundButton"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the element"
+        },
+        "spacing": {
+          "type": "string",
+          "enum": ["none", "small", "default", "medium", "large", "extraLarge", "padding"]
+        },
+        "separator": {
+          "type": "boolean",
+          "description": "Draw a separating line at the top of the element"
+        },
+        "height": {
+          "type": "string",
+          "enum": ["auto", "stretch"]
+        },
+        "isVisible": {
+          "type": "boolean",
+          "default": true
+        },
+        "requires": {
+          "type": "object",
+          "description": "Host capabilities required to display element"
+        }
+      }
+    },
+    "Action": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Action.Submit",
+            "Action.OpenUrl",
+            "Action.ShowCard",
+            "Action.ToggleVisibility",
+            "Action.Execute"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string",
+          "description": "Label for the action"
+        },
+        "iconUrl": {
+          "type": "string",
+          "description": "Optional icon to display"
+        },
+        "style": {
+          "type": "string",
+          "enum": ["default", "positive", "destructive"]
+        },
+        "tooltip": {
+          "type": "string",
+          "description": "Tooltip text (v1.6)"
+        },
+        "isEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether action is enabled (v1.6)"
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["primary", "secondary"],
+          "description": "Action display mode (v1.6)"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL to open (Action.OpenUrl)"
+        },
+        "data": {
+          "description": "Data to submit (Action.Submit)"
+        },
+        "verb": {
+          "type": "string",
+          "description": "Semantic verb for the action (Action.Execute v1.6)"
+        },
+        "associatedInputs": {
+          "type": "string",
+          "enum": ["auto", "none"],
+          "description": "Which inputs to include (Action.Execute v1.6)"
+        },
+        "card": {
+          "$ref": "#/definitions/AdaptiveCard",
+          "description": "Card to show (Action.ShowCard)"
+        },
+        "targetElements": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "type": "string" },
+              { "$ref": "#/definitions/TargetElement" }
+            ]
+          },
+          "description": "Elements to toggle (Action.ToggleVisibility)"
+        }
+      }
+    },
+    "AdaptiveCard": {
+      "type": "object",
+      "description": "Recursive card definition for Action.ShowCard"
+    },
+    "BackgroundImage": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "fillMode": {
+          "type": "string",
+          "enum": ["cover", "repeatHorizontally", "repeatVertically", "repeat"]
+        },
+        "horizontalAlignment": {
+          "type": "string",
+          "enum": ["left", "center", "right"]
+        },
+        "verticalAlignment": {
+          "type": "string",
+          "enum": ["top", "center", "bottom"]
+        }
+      }
+    },
+    "TargetElement": {
+      "type": "object",
+      "required": ["elementId"],
+      "properties": {
+        "elementId": {
+          "type": "string"
+        },
+        "isVisible": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,233 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "List Element Demo",
+      "size": "large",
+      "weight": "bolder"
+    },
+    {
+      "type": "TextBlock",
+      "text": "Basic List (Default Style)",
+      "weight": "bolder",
+      "spacing": "medium"
+    },
+    {
+      "type": "List",
+      "id": "basicList",
+      "style": "default",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "First item in the list"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Second item with more text to demonstrate wrapping behavior"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Third item"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Bulleted List",
+      "weight": "bolder",
+      "spacing": "medium"
+    },
+    {
+      "type": "List",
+      "id": "bulletedList",
+      "style": "bulleted",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Eggs"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Milk"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Bread"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Butter"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Numbered List",
+      "weight": "bolder",
+      "spacing": "medium"
+    },
+    {
+      "type": "List",
+      "id": "numberedList",
+      "style": "numbered",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Turn on the computer"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Open the browser"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Navigate to the website"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Complete the task"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "List with MaxHeight (Scrollable)",
+      "weight": "bolder",
+      "spacing": "medium"
+    },
+    {
+      "type": "List",
+      "id": "scrollableList",
+      "style": "numbered",
+      "maxHeight": "150px",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Item 1 - This list has a maxHeight constraint"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Item 2 - Scroll to see more items"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Item 3 - Content continues below"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Item 4 - More content here"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Item 5 - Keep scrolling"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Item 6 - Almost there"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Item 7 - Last item!"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "List with Mixed Content",
+      "weight": "bolder",
+      "spacing": "medium"
+    },
+    {
+      "type": "List",
+      "id": "mixedContentList",
+      "style": "bulleted",
+      "items": [
+        {
+          "type": "Container",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Task Title",
+              "weight": "bolder"
+            },
+            {
+              "type": "TextBlock",
+              "text": "Description of the task with additional details",
+              "size": "small",
+              "color": "dark",
+              "wrap": true
+            }
+          ]
+        },
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "width": "auto",
+              "items": [
+                {
+                  "type": "Image",
+                  "url": "https://adaptivecards.io/content/cats/1.png",
+                  "size": "small"
+                }
+              ]
+            },
+            {
+              "type": "Column",
+              "width": "stretch",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "Item with image and text"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "TextBlock",
+          "text": "Simple text item",
+          "color": "accent"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Empty List (Edge Case)",
+      "weight": "bolder",
+      "spacing": "medium"
+    },
+    {
+      "type": "List",
+      "id": "emptyList",
+      "items": []
+    },
+    {
+      "type": "TextBlock",
+      "text": "List with Spacing",
+      "weight": "bolder",
+      "spacing": "medium"
+    },
+    {
+      "type": "List",
+      "id": "spacedList",
+      "style": "bulleted",
+      "spacing": "large",
+      "separator": true,
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "Item with spacing above"
+        },
+        {
+          "type": "TextBlock",
+          "text": "Another item"
+        }
+      ]
+    }
+  ]
+}
