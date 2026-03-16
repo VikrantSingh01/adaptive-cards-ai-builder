@@ -4,6 +4,8 @@
   <img src="media/hero.png" alt="adaptive-cards-mcp" width="700">
 </p>
 
+[![npm](https://img.shields.io/npm/v/adaptive-cards-mcp.svg)](https://www.npmjs.com/package/adaptive-cards-mcp)
+
 The world's first MCP server for Adaptive Cards — 9 tools, 3 prompts, 909 tests.
 
 > **Blog:** [I Built an MCP Server That Makes AI 10x Better at Adaptive Cards](https://singhvikrant.substack.com/p/i-built-an-mcp-server-that-makes)

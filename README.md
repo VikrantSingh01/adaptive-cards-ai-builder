@@ -4,6 +4,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
 [![Adaptive Cards](https://img.shields.io/badge/Adaptive%20Cards-v1.6-blue.svg)](https://adaptivecards.io/)
 [![Tests](https://img.shields.io/badge/Tests-909%20passing-brightgreen.svg)]()
+[![npm](https://img.shields.io/npm/v/adaptive-cards-mcp.svg)](https://www.npmjs.com/package/adaptive-cards-mcp)
 [![Version](https://img.shields.io/badge/Version-2.1.0-blue.svg)](https://github.com/VikrantSingh01/adaptive-cards-mcp/releases/tag/v2.1.0)
 
 <p align="center">
@@ -32,7 +33,7 @@ See the full [CHANGELOG](CHANGELOG.md) for details.
 
 | Package | Description | Install |
 |---------|-------------|---------|
-| [packages/core](packages/core/) | MCP server + npm library (9 tools) | `npx adaptive-cards-mcp` |
+| [packages/core](packages/core/) | MCP server + npm library (9 tools) — [npm](https://www.npmjs.com/package/adaptive-cards-mcp) | `npx adaptive-cards-mcp` |
 | [packages/vscode-extension](packages/vscode-extension/) | VS Code extension — generate, preview, validate | [adaptive-cards-ai-vscode](https://github.com/VikrantSingh01/adaptive-cards-ai-vscode) |
 
 ## Quick Start
