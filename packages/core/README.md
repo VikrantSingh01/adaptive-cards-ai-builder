@@ -6,7 +6,7 @@
 
 [![npm](https://img.shields.io/npm/v/adaptive-cards-mcp.svg)](https://www.npmjs.com/package/adaptive-cards-mcp)
 
-The world's first MCP server for Adaptive Cards — 9 tools, 3 prompts, 909 tests.
+The world's first MCP server for Adaptive Cards — 9 tools, 3 prompts, 918 tests. Now with Designer preview.
 
 > **Blog:** [I Built an MCP Server That Makes AI 10x Better at Adaptive Cards](https://singhvikrant.substack.com/p/i-built-an-mcp-server-that-makes)
 
@@ -174,17 +174,25 @@ When used via MCP (Claude Code, Copilot, Cursor), the host LLM provides the inte
 ```bash
 npm install
 npm run build         # TypeScript + copy data files
-npm test              # 909 tests (vitest)
+npm test              # 918 tests (vitest)
 npm run test:coverage # Coverage report
 npm run lint          # TypeScript type check
 npm run lint:eslint   # ESLint
 npm run format        # Prettier
 ```
 
+### Designer Preview
+
+Card-producing tools (`generate_card`, `data_to_card`, `generate_and_validate`, `card_workflow`) return a `preview` URL that auto-opens the [Adaptive Cards Designer](https://adaptivecards.microsoft.com/designer) with the card pre-loaded:
+
+- **stdio mode** — Writes a self-contained HTML bridge page to a temp file (`file://` URL)
+- **SSE mode** — Serves preview at `/preview/{cardId}` (no auth required)
+
 ## Related
 
 - [Adaptive Cards MCP (monorepo)](https://github.com/VikrantSingh01/adaptive-cards-mcp)
 - [VS Code Extension](https://github.com/VikrantSingh01/adaptive-cards-ai-vscode)
+- [openclaw-adaptive-cards](https://github.com/VikrantSingh01/openclaw-adaptive-cards) — OpenClaw AI agent plugin using this library
 - [CHANGELOG](../../CHANGELOG.md)
 - [Adaptive Cards Documentation](https://adaptivecards.microsoft.com/) — Official docs
 - [Adaptive Cards Designer](https://adaptivecards.microsoft.com/designer) — Interactive card designer

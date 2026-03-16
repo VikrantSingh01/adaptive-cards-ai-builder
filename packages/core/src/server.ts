@@ -66,7 +66,7 @@ if (process.env.MCP_RATE_LIMIT === "true") {
 const server = new Server(
   {
     name: "adaptive-cards-mcp",
-    version: "2.1.0",
+    version: "2.2.0",
   },
   {
     capabilities: {
@@ -1038,7 +1038,7 @@ async function startSSE() {
       res.end(JSON.stringify({
         status: "ok",
         name: "adaptive-cards-mcp",
-        version: "2.1.0",
+        version: "2.2.0",
         tools: TOOLS.length,
         transport: "sse",
       }));

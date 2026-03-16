@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2026-03-16
+
+### Added
+- **Designer Preview** — Card-producing tools now return a `preview` URL that auto-opens the Adaptive Cards Designer with the card payload pre-loaded via `postMessage`
+  - **stdio mode**: writes a self-contained HTML bridge page to a temp file (`file://` URL via `pathToFileURL` for cross-platform correctness)
+  - **SSE mode**: serves preview at `/preview/{cardId}` endpoint (public route, no auth required)
+- **XSS-safe HTML generation** — Card JSON is escaped (`<`, `>`, `&`) before embedding in the preview `<script>` block
+- **Cross-platform file URLs** — Uses Node.js `pathToFileURL()` for correct `file:///C:/...` URLs on Windows
+- **CSP headers** — Preview endpoint sets `Content-Security-Policy` allowing only the Designer iframe origin
+- **Preview tests** — 9 new tests covering HTML generation, file writing, XSS escaping, and URL format
+
+### Changed
+- Test count increased from 909 to 918 (20 test files)
+
 ## [2.1.0] - 2026-03-16
 
 ### Added

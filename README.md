@@ -3,12 +3,12 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
 [![Adaptive Cards](https://img.shields.io/badge/Adaptive%20Cards-v1.6-blue.svg)](https://adaptivecards.io/)
-[![Tests](https://img.shields.io/badge/Tests-909%20passing-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-918%20passing-brightgreen.svg)]()
 [![npm](https://img.shields.io/npm/v/adaptive-cards-mcp.svg)](https://www.npmjs.com/package/adaptive-cards-mcp)
-[![Version](https://img.shields.io/badge/Version-2.1.0-blue.svg)](https://github.com/VikrantSingh01/adaptive-cards-mcp/releases/tag/v2.1.0)
+[![Version](https://img.shields.io/badge/Version-2.2.0-blue.svg)](https://github.com/VikrantSingh01/adaptive-cards-mcp/releases/tag/v2.2.0)
 
 <p align="center">
-  <img src="media/hero.png" alt="adaptive-cards-mcp — 9 tools, 21 patterns, 909 tests, 0 competitors" width="800">
+  <img src="media/hero.png" alt="adaptive-cards-mcp — 9 tools, 21 patterns, 918 tests, 0 competitors" width="800">
 </p>
 
 The world's first MCP server for Adaptive Cards — **9 tools** that make any LLM 10x better at card generation. An MCP server that helps AI assistants generate valid, accessible Adaptive Cards for Teams, Outlook, Copilot, and other agentic surfaces.
@@ -17,15 +17,12 @@ The world's first MCP server for Adaptive Cards — **9 tools** that make any LL
 
 Available as an **MCP server** (stdio + HTTP/SSE), **npm library**, and **VS Code extension**.
 
-## What's New in v2.1.0
+## What's New in v2.2.0
 
-- **HTTP/SSE Transport** — Deploy for M365 Copilot, Copilot Studio, and ChatGPT (`TRANSPORT=sse`)
-- **Card Persistence** — `cardId` references across tool calls to reduce token overhead
-- **Compound Tools** — `generate_and_validate` and `card_workflow` for multi-step pipelines
-- **MCP Prompts** — 3 guided prompts for common workflows
-- **Auth Middleware** — API key + bearer token for HTTP deployments
-- **Azure OpenAI + Ollama** — Additional LLM provider support
-- **Input Guards, Rate Limiting, Telemetry** — Enterprise hardening
+- **Designer Preview** — Card-producing tools now return a `preview` URL that auto-opens the [Adaptive Cards Designer](https://adaptivecards.microsoft.com/designer) with the card pre-loaded via `postMessage`
+  - **stdio**: file-based HTML bridge page (cross-platform `file://` URLs)
+  - **SSE**: served at `/preview/{cardId}` with CSP headers
+- **XSS-safe embedding** — Card JSON is escaped before injecting into the preview page
 
 See the full [CHANGELOG](CHANGELOG.md) for details.
 
@@ -206,7 +203,7 @@ console.log(result.validation); // Schema + accessibility + host compat
 cd packages/core
 npm install
 npm run build         # TypeScript + copy data files
-npm test              # 909 tests (vitest)
+npm test              # 918 tests (vitest)
 npm run test:coverage # With coverage report
 npm run lint          # TypeScript type check
 npm run lint:eslint   # ESLint check
@@ -223,7 +220,7 @@ packages/core/src/
 ├── core/                  # Schema validator, analyzer, accessibility, host compat
 ├── generation/            # 11 layout patterns, data analyzer, assembler, LLM client
 ├── tools/                 # 9 tool handlers
-├── utils/                 # Logger, input guards, rate limiter, card store, auth, telemetry
+├── utils/                 # Logger, input guards, rate limiter, card store, auth, telemetry, preview
 └── data/                  # v1.6 schema, 36 examples, host configs
 ```
 
