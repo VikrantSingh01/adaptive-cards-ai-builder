@@ -6,6 +6,7 @@
 [![Tests](https://img.shields.io/badge/Tests-924%20passing-brightgreen.svg)]()
 [![npm](https://img.shields.io/npm/v/adaptive-cards-mcp.svg)](https://www.npmjs.com/package/adaptive-cards-mcp)
 [![npm downloads](https://img.shields.io/npm/dm/adaptive-cards-mcp.svg)](https://www.npmjs.com/package/adaptive-cards-mcp)
+[![MCP Registry](https://img.shields.io/badge/MCP_Registry-listed-brightgreen.svg)](https://registry.modelcontextprotocol.io/?q=adaptive)
 [![GitHub stars](https://img.shields.io/github/stars/VikrantSingh01/adaptive-cards-mcp.svg?style=social)](https://github.com/VikrantSingh01/adaptive-cards-mcp)
 
 <p align="center">
@@ -456,12 +457,15 @@ packages/core/src/
 | [packages/core](packages/core/) | MCP server + npm library (9 tools) — [npm](https://www.npmjs.com/package/adaptive-cards-mcp) |
 | [packages/vscode-extension](packages/vscode-extension/) | VS Code extension — [adaptive-cards-ai-vscode](https://github.com/VikrantSingh01/adaptive-cards-ai-vscode) |
 
-## What's New in v2.2.1
+## What's New in v2.3.0
 
-- **Cleaner output** — Card JSON in a copy-friendly code block, separated from metadata
-- **No more empty elements** — Cleans up empty TextBlocks, empty FactSets, broken speak text
-- **Designer link** — Every response includes a link to the [Adaptive Cards Designer](https://adaptivecards.microsoft.com/designer)
-- **Spec compliance** — Nested ShowCard cards no longer carry a `version` property
+- **Accessibility 100/100** — All generated cards now include `speak` property automatically
+- **No more broken JSON** — Newlines in content sanitized, titles no longer truncate at version numbers
+- **Host-aware generation** — `generate_and_validate` auto-downgrades card version for Outlook (v1.4), Webex (v1.3)
+- **CSV fix** — CSV data correctly parsed before building FactSet/Table cards
+- **Telemetry** — `/metrics` endpoint with session tracking, per-tool call distribution, host/intent usage
+- **MCP Registry** — Listed on the [official MCP Registry](https://registry.modelcontextprotocol.io/?q=adaptive)
+- **E2E test suite** — 28 tool tests + 10 prompt tests with quality gates (a11y score, element count)
 
 See the full [CHANGELOG](CHANGELOG.md) for details.
 

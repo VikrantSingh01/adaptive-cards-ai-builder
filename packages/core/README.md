@@ -6,6 +6,7 @@
 
 [![npm](https://img.shields.io/npm/v/adaptive-cards-mcp.svg)](https://www.npmjs.com/package/adaptive-cards-mcp)
 [![npm downloads](https://img.shields.io/npm/dm/adaptive-cards-mcp.svg)](https://www.npmjs.com/package/adaptive-cards-mcp)
+[![MCP Registry](https://img.shields.io/badge/MCP_Registry-listed-brightgreen.svg)](https://registry.modelcontextprotocol.io/?q=adaptive)
 [![GitHub stars](https://img.shields.io/github/stars/VikrantSingh01/adaptive-cards-mcp.svg?style=social)](https://github.com/VikrantSingh01/adaptive-cards-mcp)
 
 An MCP server that helps AI assistants generate valid, accessible Adaptive Cards for Teams, Outlook, Copilot, and other Microsoft surfaces. 9 tools, 3 guided workflows, 924 tests.
