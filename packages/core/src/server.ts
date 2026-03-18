@@ -24,6 +24,10 @@ import {
 import { readFileSync, readdirSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
+const { version: PKG_VERSION } = require("../package.json");
 import { getAllHostSupport, getHostSupport } from "./core/host-compatibility.js";
 import { getAllPatterns } from "./generation/layout-patterns.js";
 import { handleGenerateCard } from "./tools/generate-card.js";
@@ -53,7 +57,7 @@ const logger = createLogger("server");
 initLLMFromEnv();
 
 // Telemetry (opt-in via MCP_TELEMETRY=true)
-import { initTelemetry, recordToolCall } from "./utils/telemetry.js";
+import { initTelemetry, recordToolCall, recordSessionStart, recordUsageContext, getMetricsSnapshot, isTelemetryEnabled } from "./utils/telemetry.js";
 initTelemetry();
 
 // Enable rate limiting if env var set
@@ -66,7 +70,7 @@ if (process.env.MCP_RATE_LIMIT === "true") {
 const server = new Server(
   {
     name: "adaptive-cards-mcp",
-    version: "2.2.0",
+    version: PKG_VERSION,
   },
   {
     capabilities: {
@@ -353,6 +357,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
   logger.info("Tool call", { reqId, tool: name });
 
+  // Track host/intent usage for telemetry
+  recordUsageContext(args?.host as string, args?.intent as string);
+
   try {
     // Rate limit check
     checkRateLimit(name);
@@ -595,10 +602,25 @@ async function handleGenerateAndValidate(
     card = optResult.card;
     designNotes += ` | Optimized for: ${optimizeGoals.join(", ")}`;
     stepsCompleted.push("optimize");
-
-    // Re-validate after optimization
-    validation = handleValidateCard({ card, host: host as HostApp });
   }
+
+  // Step 3: Auto-downgrade version if host requires it
+  if (host !== "generic") {
+    const hostInfo = getHostSupport(host as HostApp);
+    const cardVersion = String(card.version || "1.6");
+    if (hostInfo && cardVersion > hostInfo.maxVersion) {
+      const txResult = handleTransformCard({
+        card,
+        transform: "downgrade-version",
+        targetVersion: hostInfo.maxVersion,
+      });
+      card = txResult.card;
+      stepsCompleted.push("transform");
+    }
+  }
+
+  // Re-validate after all modifications
+  validation = handleValidateCard({ card, host: host as HostApp });
 
   const cardId = storeCard(card, { tool: "generate_and_validate" });
 
@@ -701,6 +723,12 @@ async function handleCardWorkflow(
 
   if (!card) throw new Error("Workflow produced no card. Include a 'generate' step.");
 
+  // Re-validate against the final card state (not an intermediate step)
+  const lastStep = stepsCompleted[stepsCompleted.length - 1];
+  if (lastStep !== "validate") {
+    validation = handleValidateCard({ card, host: host as HostApp });
+  }
+
   const cardId = storeCard(card, { tool: "card_workflow" });
 
   return {
@@ -736,7 +764,7 @@ const RESOURCES = [
   {
     uri: "ac://patterns",
     name: "Layout Pattern Guide",
-    description: "11 canonical layout patterns with templates",
+    description: "21 canonical layout patterns with templates",
     mimeType: "application/json",
   },
   {
@@ -1058,8 +1086,17 @@ function loadExamplesCatalog(): Array<{ name: string; description: string; eleme
 async function startStdio() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  logger.info("Server started", { transport: "stdio", tools: TOOLS.length });
-  console.error(`Adaptive Cards AI Builder MCP Server started (${TOOLS.length} tools, stdio)`);
+  recordSessionStart(PKG_VERSION, "stdio");
+  logger.info("Server started", {
+    version: PKG_VERSION,
+    transport: "stdio",
+    tools: TOOLS.length,
+    prompts: 3,
+    platform: process.platform,
+    nodeVersion: process.version,
+    telemetry: isTelemetryEnabled(),
+  });
+  console.error(`adaptive-cards-mcp v${PKG_VERSION} started (${TOOLS.length} tools, 3 prompts, stdio)`);
 }
 
 async function startSSE() {
@@ -1084,7 +1121,7 @@ async function startSSE() {
     }
 
     // Auth check for non-health and non-preview endpoints
-    const isPublicRoute = req.url === "/health" || req.url?.startsWith("/preview/");
+    const isPublicRoute = req.url === "/health" || req.url === "/metrics" || req.url?.startsWith("/preview/");
     if (!isPublicRoute) {
       const authResult = await validateAuth(req.headers.authorization);
       if (!authResult.authorized) {
@@ -1096,12 +1133,36 @@ async function startSSE() {
 
     if (req.url === "/health") {
       res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({
+      const health: Record<string, unknown> = {
         status: "ok",
         name: "adaptive-cards-mcp",
-        version: "2.2.0",
+        version: PKG_VERSION,
         tools: TOOLS.length,
         transport: "sse",
+        uptime: Math.round(process.uptime()),
+      };
+      if (isTelemetryEnabled()) {
+        const snapshot = getMetricsSnapshot() as Record<string, unknown>;
+        health.metrics = snapshot;
+      }
+      res.end(JSON.stringify(health));
+      return;
+    }
+
+    if (req.url === "/metrics") {
+      if (!isTelemetryEnabled()) {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({
+          enabled: false,
+          message: "Set MCP_TELEMETRY=true to enable metrics collection.",
+        }));
+        return;
+      }
+      res.writeHead(200, { "Content-Type": "application/json" });
+      const snapshot = getMetricsSnapshot();
+      res.end(JSON.stringify({
+        enabled: true,
+        ...snapshot,
       }));
       return;
     }
@@ -1160,12 +1221,22 @@ async function startSSE() {
     }
 
     res.writeHead(404, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ error: "Not found. Use /sse for SSE or /health for status." }));
+    res.end(JSON.stringify({ error: "Not found. Endpoints: /sse, /health, /metrics, /preview/{cardId}" }));
   });
 
   httpServer.listen(port, () => {
-    logger.info("Server started", { transport: "sse", port, tools: TOOLS.length });
-    console.error(`Adaptive Cards AI Builder MCP Server started (${TOOLS.length} tools, SSE on port ${port})`);
+    recordSessionStart(PKG_VERSION, "sse");
+    logger.info("Server started", {
+      version: PKG_VERSION,
+      transport: "sse",
+      port,
+      tools: TOOLS.length,
+      prompts: 3,
+      platform: process.platform,
+      nodeVersion: process.version,
+      telemetry: isTelemetryEnabled(),
+    });
+    console.error(`adaptive-cards-mcp v${PKG_VERSION} started (${TOOLS.length} tools, 3 prompts, SSE on port ${port})`);
   });
 
   return httpServer;

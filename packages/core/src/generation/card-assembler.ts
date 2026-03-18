@@ -7,6 +7,15 @@ import type { CardIntent, DataPresentation, HostApp } from "../types/index.js";
 import { analyzeData, parseCSV } from "./data-analyzer.js";
 import { findPatternByIntent, findPatternByName, scorePatterns } from "./layout-patterns.js";
 
+/**
+ * Sanitize text for use in Adaptive Card JSON string values.
+ * Replaces literal newlines/tabs with spaces to prevent
+ * "Unexpected end of string" JSON parse errors in the Designer.
+ */
+function sanitizeText(text: string): string {
+  return text.replace(/[\r\n\t]+/g, " ").trim();
+}
+
 interface AssembleOptions {
   title?: string;
   content?: string;
@@ -23,41 +32,91 @@ interface AssembleOptions {
 export function assembleCard(options: AssembleOptions): Record<string, unknown> {
   const { content, data, intent, presentation, version = "1.6" } = options;
 
+  let card: Record<string, unknown>;
+
   // If we have structured data, build a data-driven card
   if (data) {
-    return assembleDataCard(data, {
+    card = assembleDataCard(data, {
       title: options.title || extractTitle(content || ""),
       presentation,
       version,
     });
-  }
-
-  // Special handling for form intent — generate actual input fields
-  if (intent === "form" || (content && /\b(form|input|survey|collect|register)\b/i.test(content))) {
-    return buildFormCard(options);
-  }
-
-  // If we have an intent, use the matching pattern
-  if (intent) {
+  } else if (intent === "form" || (content && /\b(form|input|survey|collect|register)\b/i.test(content))) {
+    // Special handling for form intent — generate actual input fields
+    card = buildFormCard(options);
+  } else if (intent) {
+    // If we have an intent, use the matching pattern
     const pattern = findPatternByIntent(intent);
     if (pattern) {
-      return fillPattern(pattern.template as Record<string, unknown>, options);
+      card = fillPattern(pattern.template as Record<string, unknown>, options);
+    } else {
+      card = buildSimpleCard(options);
     }
-  }
-
-  // Score patterns against the content description
-  if (content) {
+  } else if (content) {
+    // Score patterns against the content description
     const scored = scorePatterns(content);
     if (scored.length > 0 && scored[0].score > 0) {
-      return fillPattern(
+      card = fillPattern(
         scored[0].pattern.template as Record<string, unknown>,
         options,
       );
+    } else {
+      card = buildSimpleCard(options);
+    }
+  } else {
+    // Default: simple notification card
+    card = buildSimpleCard(options);
+  }
+
+  // Add speak property for accessibility if not already present
+  if (!card.speak) {
+    const speakText = extractSpeakText(card);
+    if (speakText) {
+      card.speak = speakText;
     }
   }
 
-  // Default: simple notification card
-  return buildSimpleCard(options);
+  return card;
+}
+
+/**
+ * Extract speak text from card body TextBlocks for screen reader accessibility
+ */
+function extractSpeakText(card: Record<string, unknown>): string {
+  const texts: string[] = [];
+
+  function walk(elements: unknown[]): void {
+    if (!Array.isArray(elements)) return;
+    for (const el of elements) {
+      if (!el || typeof el !== "object") continue;
+      const element = el as Record<string, unknown>;
+      if (element.type === "TextBlock" && typeof element.text === "string") {
+        const trimmed = element.text.trim();
+        if (trimmed && !trimmed.includes("${")) {
+          texts.push(trimmed);
+        }
+      }
+      // FactSet facts
+      if (element.type === "FactSet" && Array.isArray(element.facts)) {
+        for (const fact of element.facts) {
+          const f = fact as Record<string, unknown>;
+          if (typeof f.title === "string" && typeof f.value === "string") {
+            texts.push(`${f.title}: ${f.value}`);
+          }
+        }
+      }
+      if (Array.isArray(element.items)) walk(element.items);
+      if (Array.isArray(element.columns)) {
+        for (const col of element.columns) {
+          const column = col as Record<string, unknown>;
+          if (Array.isArray(column.items)) walk(column.items);
+        }
+      }
+    }
+  }
+
+  if (Array.isArray(card.body)) walk(card.body);
+  return texts.slice(0, 5).join(". ").replace(/[\r\n\t]+/g, " ").trim();
 }
 
 /**
@@ -72,26 +131,46 @@ function assembleDataCard(
     ? analysis.presentation
     : opts.presentation;
 
+  // Parse CSV strings into structured data before passing to builders
+  let resolvedData = data;
+  if (typeof data === "string" && analysis.shape === "csv") {
+    resolvedData = parseCSV(data);
+  }
+
+  let card: Record<string, unknown>;
   switch (pres) {
     case "table":
-      return buildTableCard(data, opts.title, opts.version, analysis);
+      card = buildTableCard(resolvedData, opts.title, opts.version, analysis);
+      break;
     case "facts":
-      return buildFactsCard(data, opts.title, opts.version);
+      card = buildFactsCard(resolvedData, opts.title, opts.version);
+      break;
     case "chart-bar":
-      return buildChartCard(data, opts.title, opts.version, "BarChart");
+      card = buildChartCard(resolvedData, opts.title, opts.version, "BarChart");
+      break;
     case "chart-line":
-      return buildChartCard(data, opts.title, opts.version, "LineChart");
+      card = buildChartCard(resolvedData, opts.title, opts.version, "LineChart");
+      break;
     case "chart-pie":
-      return buildChartCard(data, opts.title, opts.version, "PieChart");
+      card = buildChartCard(resolvedData, opts.title, opts.version, "PieChart");
+      break;
     case "chart-donut":
-      return buildChartCard(data, opts.title, opts.version, "DonutChart");
+      card = buildChartCard(resolvedData, opts.title, opts.version, "DonutChart");
+      break;
     case "list":
-      return buildListCard(data, opts.title, opts.version);
+      card = buildListCard(resolvedData, opts.title, opts.version);
+      break;
     case "carousel":
-      return buildCarouselCard(data, opts.title, opts.version);
+      card = buildCarouselCard(resolvedData, opts.title, opts.version);
+      break;
     default:
-      return buildTableCard(data, opts.title, opts.version, analysis);
+      card = buildTableCard(resolvedData, opts.title, opts.version, analysis);
+      break;
   }
+
+  // Post-process: remove empty elements from data-driven cards too
+  cleanupCard(card);
+  return card;
 }
 
 function buildTableCard(
@@ -165,7 +244,7 @@ function buildTableCard(
               items: [
                 {
                   type: "TextBlock",
-                  text: String(row[col] ?? ""),
+                  text: sanitizeText(String(row[col] ?? "")),
                   wrap: true,
                 },
               ],
@@ -190,7 +269,7 @@ function buildFactsCard(
       .filter(([, v]) => typeof v === "string" || typeof v === "number" || typeof v === "boolean")
       .map(([k, v]) => ({
         title: formatLabel(k),
-        value: String(v),
+        value: sanitizeText(String(v)),
       }));
   } else if (Array.isArray(data)) {
     const arr = data as Record<string, unknown>[];
@@ -288,14 +367,14 @@ function buildListCard(
       if (typeof item === "string") {
         items.push({
           type: "TextBlock",
-          text: `- ${item}`,
+          text: `- ${sanitizeText(item)}`,
           wrap: true,
         });
       } else if (item && typeof item === "object") {
         const obj = item as Record<string, unknown>;
         const keys = Object.keys(obj);
-        const primary = String(obj[keys[0]] ?? "");
-        const secondary = keys.length > 1 ? String(obj[keys[1]] ?? "") : "";
+        const primary = sanitizeText(String(obj[keys[0]] ?? ""));
+        const secondary = keys.length > 1 ? sanitizeText(String(obj[keys[1]] ?? "")) : "";
 
         items.push({
           type: "ColumnSet",
@@ -382,7 +461,7 @@ function buildCarouselCard(
 
         pageItems.push({
           type: "TextBlock",
-          text: String(obj[titleKey] ?? ""),
+          text: sanitizeText(String(obj[titleKey] ?? "")),
           weight: "bolder",
           wrap: true,
         });
@@ -550,7 +629,7 @@ function buildSimpleCard(options: AssembleOptions): Record<string, unknown> {
   if (options.content) {
     body.push({
       type: "TextBlock",
-      text: options.content,
+      text: sanitizeText(options.content),
       wrap: true,
     });
   }
@@ -575,15 +654,15 @@ function fillPattern(
 
   // Replace placeholders with actual values (prefer meaningful defaults over empty strings)
   const replacements: Record<string, string> = {
-    "{{title}}": title,
-    "{{body}}": content,
-    "{{description}}": content,
-    "{{subtitle}}": extractSubtitle(content, title),
-    "{{requesterName}}": extractName(content) || "Pending",
+    "{{title}}": sanitizeText(title),
+    "{{body}}": sanitizeText(content),
+    "{{description}}": sanitizeText(content),
+    "{{subtitle}}": sanitizeText(extractSubtitle(content, title)),
+    "{{requesterName}}": sanitizeText(extractName(content) || "Pending"),
     "{{avatarUrl}}": "https://ui-avatars.com/api/?name=AC&background=0078D4&color=fff&size=64&rounded=true",
     "{{iconUrl}}": "https://adaptivecards.io/content/pending.png",
     "{{status}}": "Pending",
-    "{{name}}": extractName(content) || "Name",
+    "{{name}}": sanitizeText(extractName(content) || "Name"),
     "{{role}}": "",
     "{{organization}}": "",
     "{{profileUrl}}": "https://example.com",
@@ -616,6 +695,16 @@ function fillPattern(
 
   // Post-process: clean up empty elements and fix spec violations
   cleanupCard(filled);
+
+  // Safety net: if cleanup removed everything except the heading,
+  // add the content back as a body TextBlock so the card isn't useless
+  if (Array.isArray(filled.body) && filled.body.length <= 1 && content) {
+    filled.body.push({
+      type: "TextBlock",
+      text: sanitizeText(content),
+      wrap: true,
+    });
+  }
 
   return filled;
 }
@@ -723,10 +812,17 @@ function extractName(content: string): string {
 }
 
 function extractTitle(content: string): string {
-  // Extract first sentence or first N words as title
-  const firstSentence = content.split(/[.!?\n]/)[0].trim();
+  // Extract a clean title from the content.
+  // Split on sentence-ending punctuation, but NOT periods inside
+  // version numbers (v2.4.1), decimals (2.3s), domains (api.com), or abbreviations.
+  // A sentence-ending period must be followed by a space+uppercase or end of string.
+  const sentenceEnd = content.search(/[!?\n]|\.(?:\s+[A-Z]|\s*$)/);
+  const firstSentence = sentenceEnd > 0 ? content.slice(0, sentenceEnd).trim() : content.trim();
   if (firstSentence.length <= 60) return firstSentence;
-  return firstSentence.slice(0, 57) + "...";
+  // Truncate at word boundary
+  const truncated = firstSentence.slice(0, 57);
+  const lastSpace = truncated.lastIndexOf(" ");
+  return (lastSpace > 40 ? truncated.slice(0, lastSpace) : truncated) + "...";
 }
 
 function formatLabel(key: string): string {

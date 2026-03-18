@@ -6,3 +6,9 @@ dist/
 .env.local
 coverage/
 .npmrc
+media/*.html
+media/*-old.png
+.mcpregistry_*
+mcp-publisher
+test-results.txt
+packages/log.txt

@@ -399,7 +399,7 @@ function mergeAdjacentTextBlocks(elements: unknown[], parentPath: string, change
       !curr.text.includes("${") &&
       !prev.text.includes("${")
     ) {
-      const mergedText = `${prev.text}\n\n${curr.text}`;
+      const mergedText = `${prev.text} ${curr.text}`;
       changes.push({
         description: `Merged adjacent TextBlocks at ${parentPath}[${i - 1}] and ${parentPath}[${i}]`,
         before: `TextBlock("${truncate(prev.text, 30)}") + TextBlock("${truncate(curr.text, 30)}")`,
@@ -634,7 +634,7 @@ function extractSpeakText(card: Record<string, unknown>): string {
   }
 
   if (Array.isArray(card.body)) walk(card.body);
-  return texts.slice(0, 3).join(". ");
+  return texts.slice(0, 3).join(". ").replace(/[\r\n\t]+/g, " ").trim();
 }
 
 function deriveAltText(el: Record<string, unknown>): string {

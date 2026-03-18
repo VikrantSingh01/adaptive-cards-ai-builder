@@ -5,25 +5,20 @@
 </p>
 
 [![npm](https://img.shields.io/npm/v/adaptive-cards-mcp.svg)](https://www.npmjs.com/package/adaptive-cards-mcp)
+[![npm downloads](https://img.shields.io/npm/dm/adaptive-cards-mcp.svg)](https://www.npmjs.com/package/adaptive-cards-mcp)
+[![GitHub stars](https://img.shields.io/github/stars/VikrantSingh01/adaptive-cards-mcp.svg?style=social)](https://github.com/VikrantSingh01/adaptive-cards-mcp)
 
-The world's first MCP server for Adaptive Cards — 9 tools, 3 prompts, 924 tests. Clean card output with Designer preview.
+An MCP server that helps AI assistants generate valid, accessible Adaptive Cards for Teams, Outlook, Copilot, and other Microsoft surfaces. 9 tools, 3 guided workflows, 924 tests.
 
 > **Blog:** [I Built an MCP Server That Makes AI 10x Better at Adaptive Cards](https://singhvikrant.substack.com/p/i-built-an-mcp-server-that-makes)
-
+>
 > Part of the [Adaptive Cards MCP](https://github.com/VikrantSingh01/adaptive-cards-mcp) ecosystem.
 
-## Install
+## Quick Start
 
-```bash
-npm install adaptive-cards-mcp
-```
+### 1. Add to your AI assistant
 
-Or run directly as an MCP server:
-```bash
-npx adaptive-cards-mcp
-```
-
-### MCP Client Setup
+No install needed — `npx` downloads and runs it automatically.
 
 **Claude Code:**
 ```bash
@@ -48,6 +43,81 @@ TRANSPORT=sse PORT=3001 npx adaptive-cards-mcp
 TRANSPORT=sse MCP_API_KEY=your-secret npx adaptive-cards-mcp
 ```
 
+### 2. Start using it
+
+Just ask your AI assistant in natural language:
+
+```
+> Create an expense approval card for Teams
+> Convert this JSON data into an Adaptive Card table
+> Validate this card and fix accessibility issues
+> Make this card work on Outlook (v1.4)
+```
+
+The AI picks the right tools, generates a valid card, and returns production-ready JSON you can paste into the [Adaptive Cards Designer](https://adaptivecards.microsoft.com/designer) to preview.
+
+## Usage
+
+### Natural language (recommended)
+
+Just describe what you need:
+
+```
+> Create an expense approval card for Teams with requester photo, line items,
+  total amount, and approve/reject buttons with comment field
+```
+```
+> Build a CI/CD deployment notification — service name, environment, build number,
+  status badge, and rollback action
+```
+```
+> Here's our sales data, make it a card:
+  [{"region":"APAC","revenue":1250000},{"region":"EMEA","revenue":980000}]
+```
+```
+> This card works in Teams but breaks in Outlook — fix it for v1.4
+```
+
+| What you say | What the AI calls |
+|-------------|-------------------|
+| "Create a leave approval card for Teams" | `generate_and_validate` → optimized card with Approve/Reject actions |
+| "Here's my API response, make it a card" | `data_to_card` → auto-picks Table/FactSet/List based on data shape |
+| "Is this card valid for Outlook?" | `validate_card` → schema errors, accessibility score, host compatibility |
+| "Make this card accessible" | `optimize_card` → adds wrap, altText, speak, heading styles |
+| "Convert this card to a reusable template" | `template_card` → static values become `${expression}` bindings |
+| "This card needs to work on v1.3" | `transform_card` → downgrades, removes unsupported features |
+
+### Slash commands (MCP prompts)
+
+For guided multi-step workflows:
+
+**Create a card:**
+```
+> /adaptive-cards-mcp:create-adaptive-card
+  description: "A weather forecast card showing 5-day outlook with temperatures and icons"
+  host: teams
+  intent: display
+```
+
+**Convert data to a card:**
+```
+> /adaptive-cards-mcp:convert-data-to-card
+  data: [
+    { "task": "Review PR", "assignee": "Jane", "due": "2026-03-21", "status": "pending" },
+    { "task": "Deploy hotfix", "assignee": "Bob", "due": "2026-03-19", "status": "in-progress" },
+    { "task": "Update docs", "assignee": "Carol", "due": "2026-03-22", "status": "done" }
+  ]
+  title: "Sprint Tasks"
+  presentation: table
+```
+
+**Review an existing card:**
+```
+> /adaptive-cards-mcp:review-adaptive-card
+  card: { "type": "AdaptiveCard", "version": "1.6", "body": [...your card...] }
+  host: outlook
+```
+
 ## MCP Tools (9)
 
 | Tool | Description |
@@ -64,13 +134,19 @@ TRANSPORT=sse MCP_API_KEY=your-secret npx adaptive-cards-mcp
 
 ### MCP Prompts (3)
 
-| Prompt | Description |
-|--------|-------------|
-| `create-adaptive-card` | Guided card creation |
-| `review-adaptive-card` | Accessibility and compatibility review |
-| `convert-data-to-card` | Data visualization workflow |
+| Prompt | Pipeline | Slash command |
+|--------|----------|---------------|
+| `create-adaptive-card` | generate → validate → optimize → host config | `/adaptive-cards-mcp:create-adaptive-card` |
+| `review-adaptive-card` | validate → auto-fix → before/after report | `/adaptive-cards-mcp:review-adaptive-card` |
+| `convert-data-to-card` | analyze data → pick presentation → validate | `/adaptive-cards-mcp:convert-data-to-card` |
 
 ## Library Usage
+
+For use in your own code (bots, APIs, CI pipelines):
+
+```bash
+npm install adaptive-cards-mcp
+```
 
 ```typescript
 import {
@@ -131,10 +207,36 @@ const validation = validateCardFull({ card: cardId, host: "teams" });
 const optimized = optimizeCard({ card: cardId, goals: ["accessibility"] });
 ```
 
+## What you get back
+
+Card-producing tools return **two clean blocks** — card JSON you can copy, and a metadata summary:
+
+````
+```json
+{
+  "type": "AdaptiveCard",
+  "version": "1.6",
+  "body": [ ... ],
+  "actions": [ ... ]
+}
+```
+
+---
+
+**Validation:** Valid
+**Accessibility Score:** 100/100
+**Elements:** 7 | **Nesting Depth:** 2 | **Version:** 1.6
+**Card ID:** card-abc123
+**Steps:** generate → validate → optimize
+**Try it out:** Paste the card JSON into the [Adaptive Cards Designer](https://adaptivecards.microsoft.com/designer)
+**Local Preview:** file:///tmp/ac-preview-xyz.html
+````
+
 ## Host Compatibility
 
 | Host | Max Version | Notes |
 |------|-------------|-------|
+| Generic | 1.6 | Default — no host-specific constraints |
 | Teams | 1.6 | Max 6 actions, Action.Execute preferred |
 | Outlook | 1.4 | Limited elements, max 4 actions |
 | Web Chat | 1.6 | Full support |
@@ -144,24 +246,16 @@ const optimized = optimizeCard({ card: cardId, goals: ["accessibility"] });
 
 ## LLM Integration
 
-By default, uses deterministic pattern matching (11 layout patterns). For AI-powered generation, set an API key:
+By default, uses deterministic pattern matching (21 layout patterns). For AI-powered generation, set an API key:
 
 ```bash
-# Anthropic (recommended)
-export ANTHROPIC_API_KEY=sk-ant-...
-
-# OpenAI
-export OPENAI_API_KEY=sk-...
-
-# Azure OpenAI
-export AZURE_OPENAI_API_KEY=...
-export AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com
-
-# Ollama (local)
-export OLLAMA_BASE_URL=http://localhost:11434
+export ANTHROPIC_API_KEY=sk-ant-...   # Anthropic (recommended)
+export OPENAI_API_KEY=sk-...          # OpenAI
+export AZURE_OPENAI_API_KEY=...       # Azure OpenAI
+export OLLAMA_BASE_URL=http://localhost:11434  # Ollama (local)
 ```
 
-When used via MCP (Claude Code, Copilot, Cursor), the host LLM provides the intelligence — no API key needed.
+> **Note:** When used via MCP (Claude Code, Copilot, Cursor), the host LLM provides the intelligence — no API key needed.
 
 ## Configuration
 
@@ -174,33 +268,6 @@ When used via MCP (Claude Code, Copilot, Cursor), the host LLM provides the inte
 | `DEBUG` | `adaptive-cards-mcp` for logs | *(disabled)* |
 | `MCP_RATE_LIMIT` | `true` to enable | `false` |
 | `MCP_TELEMETRY` | `true` to enable metrics | `false` |
-
-## Response Format
-
-Card-producing tools return **two content blocks** for clear separation:
-
-**Block 1 — Card JSON** (copy-friendly, fenced code block):
-```json
-{
-  "type": "AdaptiveCard",
-  "version": "1.6",
-  "body": [ ... ],
-  "actions": [ ... ]
-}
-```
-
-**Block 2 — Metadata** (human-readable):
-```
----
-
-**Validation:** Valid
-**Accessibility Score:** 100/100
-**Elements:** 7 | **Nesting Depth:** 2 | **Version:** 1.6
-**Card ID:** card-abc123
-**Steps:** generate → validate → optimize
-**Try it out:** Paste the card JSON into the Adaptive Cards Designer
-**Local Preview:** file:///tmp/ac-preview-xyz.html
-```
 
 ## Development
 
@@ -215,6 +282,13 @@ npm run format        # Prettier
 ```
 
 ### Local Testing
+
+**Smoke test all tools and prompts:**
+```bash
+# From repo root
+./test-mcp-tools.sh --local     # 28 tests — all 9 tools with real-world scenarios
+./test-mcp-prompts.sh --local   # 10 tests — all 3 prompts (guided workflows)
+```
 
 **MCP Inspector (visual UI):**
 ```bash
@@ -234,26 +308,17 @@ echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":
 **SSE mode:**
 ```bash
 TRANSPORT=sse PORT=3001 node dist/server.js
-# In another terminal:
 curl http://localhost:3001/health
 ```
-
-### Designer Preview
-
-Card-producing tools (`generate_card`, `data_to_card`, `generate_and_validate`, `card_workflow`) include a link to the [Adaptive Cards Designer](https://adaptivecards.microsoft.com/designer) in every response, plus a local preview URL:
-
-- **stdio mode** — Writes a self-contained HTML bridge page to a temp file (`file://` URL)
-- **SSE mode** — Serves preview at `/preview/{cardId}` (no auth required)
 
 ## Related
 
 - [Adaptive Cards MCP (monorepo)](https://github.com/VikrantSingh01/adaptive-cards-mcp)
 - [VS Code Extension](https://github.com/VikrantSingh01/adaptive-cards-ai-vscode)
 - [openclaw-adaptive-cards](https://github.com/VikrantSingh01/openclaw-adaptive-cards) — OpenClaw AI agent plugin using this library
-- [CHANGELOG](../../CHANGELOG.md)
 - [Adaptive Cards Documentation](https://adaptivecards.microsoft.com/) — Official docs
 - [Adaptive Cards Designer](https://adaptivecards.microsoft.com/designer) — Interactive card designer
-- [CONTRIBUTING](../../CONTRIBUTING.md)
+- [CHANGELOG](../../CHANGELOG.md)
 
 ## License
 
