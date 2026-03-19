@@ -17,6 +17,14 @@ An MCP server that helps AI assistants generate valid, accessible Adaptive Cards
 
 > **Blog:** [I Built an MCP Server That Makes AI 10x Better at Adaptive Cards](https://singhvikrant.substack.com/p/i-built-an-mcp-server-that-makes)
 
+## Demo
+
+<p align="center">
+  <video src="https://github.com/user-attachments/assets/372655ce-776c-4e31-a77a-4b2f79f638d2" width="800" autoplay loop muted playsinline>
+    Your browser does not support the video tag.
+  </video>
+</p>
+
 ## Quick Start
 
 No install needed — `npx` downloads and runs it automatically.
@@ -315,7 +323,7 @@ Card-producing tools return **two clean blocks** — card JSON you can copy, and
 **Local Preview:** file:///tmp/ac-preview-xyz.html
 ````
 
-## Demo
+## Tools, Prompt and Usage
 
 <p align="center">
   <img src="media/mcp-tools.png" alt="9 MCP tools for Adaptive Cards" width="800">

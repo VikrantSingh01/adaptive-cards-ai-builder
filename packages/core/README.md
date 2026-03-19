@@ -15,6 +15,14 @@ An MCP server that helps AI assistants generate valid, accessible Adaptive Cards
 >
 > Part of the [Adaptive Cards MCP](https://github.com/VikrantSingh01/adaptive-cards-mcp) ecosystem.
 
+## Demo
+
+<p align="center">
+  <video src="https://github.com/user-attachments/assets/372655ce-776c-4e31-a77a-4b2f79f638d2" width="700" autoplay loop muted playsinline>
+    Your browser does not support the video tag.
+  </video>
+</p>
+
 ## Quick Start
 
 ### 1. Add to your AI assistant
