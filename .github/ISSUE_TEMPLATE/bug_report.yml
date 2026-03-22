@@ -1,0 +1,85 @@
+name: Bug Report
+description: Report a bug with adaptive-cards-mcp
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill out the details below.
+
+  - type: dropdown
+    id: tool
+    attributes:
+      label: Which tool?
+      options:
+        - generate_card
+        - validate_card
+        - data_to_card
+        - optimize_card
+        - template_card
+        - transform_card
+        - suggest_layout
+        - generate_and_validate
+        - card_workflow
+        - Other / Not sure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: client
+    attributes:
+      label: AI client
+      options:
+        - Claude Code
+        - GitHub Copilot (VS Code)
+        - Cursor
+        - Windsurf
+        - ChatGPT
+        - Copilot Studio
+        - MCP Inspector
+        - npm library (programmatic)
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the bug and what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce the issue?
+      placeholder: |
+        1. Run `npx adaptive-cards-mcp` with...
+        2. Ask the AI to...
+        3. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: card-json
+    attributes:
+      label: Card JSON (if applicable)
+      description: Paste the card JSON that causes the issue.
+      render: json
+
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: "2.3.0"
+    validations:
+      required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js version
+      placeholder: "20.x"

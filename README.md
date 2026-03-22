@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
 [![Adaptive Cards](https://img.shields.io/badge/Adaptive%20Cards-v1.6-blue.svg)](https://adaptivecards.io/)
-[![Tests](https://img.shields.io/badge/Tests-924%20passing-brightgreen.svg)]()
+[![CI](https://github.com/VikrantSingh01/adaptive-cards-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/VikrantSingh01/adaptive-cards-mcp/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/adaptive-cards-mcp.svg)](https://www.npmjs.com/package/adaptive-cards-mcp)
 [![npm downloads](https://img.shields.io/npm/dm/adaptive-cards-mcp.svg)](https://www.npmjs.com/package/adaptive-cards-mcp)
 [![MCP Registry](https://img.shields.io/badge/MCP_Registry-listed-brightgreen.svg)](https://registry.modelcontextprotocol.io/?q=adaptive)
@@ -396,9 +396,33 @@ Card-producing tools return **two clean blocks** — card JSON you can copy, and
 | `OLLAMA_BASE_URL` | Ollama local model URL | *(disabled)* |
 | `DEBUG` | Enable debug logging: `adaptive-cards-mcp` | *(disabled)* |
 | `MCP_RATE_LIMIT` | Enable rate limiting: `true` | `false` |
-| `MCP_TELEMETRY` | Enable metrics collection: `true` | `false` |
+| `MCP_TELEMETRY` | Enable telemetry: `true` to opt-in | `false` |
+| `POSTHOG_API_KEY` | PostHog project API key for remote reporting | *(disabled)* |
+| `POSTHOG_HOST` | PostHog API host | `https://eu.i.posthog.com` |
 
 > **Note:** When used via MCP (Claude Code, Copilot, Cursor), the host LLM provides the intelligence — no API key needed. Set an API key only for standalone/library usage.
+
+### Telemetry & Privacy
+
+Telemetry is **opt-in** and disabled by default. When enabled, the server collects
+anonymous usage metrics and sends aggregated data to PostHog to help improve the project.
+
+**How to enable:**
+- **VS Code extension:** A one-time consent prompt appears on first install. You can
+  change it anytime in Settings → Adaptive Cards → Telemetry.
+- **CLI / MCP server:** Set `MCP_TELEMETRY=true` in your environment, or edit
+  `~/.adaptive-cards-mcp/config.json` and set `"telemetry": true`.
+
+**What is sent:** Tool names, call counts, durations, error rates, platform (OS),
+Node version, package version, transport type.
+
+**What is never sent:** Card content, user prompts, data payloads, IP addresses,
+file paths, environment variables.
+
+A random session ID is generated each time the server starts — no persistent
+identifier is stored across sessions.
+
+**To disable:** Set `MCP_TELEMETRY=false` or leave unconfigured (default is off).
 
 ## Development
 
