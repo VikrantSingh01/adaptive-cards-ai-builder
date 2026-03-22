@@ -22,8 +22,8 @@ describe("Telemetry", () => {
     initTelemetry();
 
     recordToolCall("test_tool", 100);
-    const snapshot = getMetricsSnapshot();
-    expect(Object.keys(snapshot)).toHaveLength(0);
+    const snapshot = getMetricsSnapshot() as { tools: Record<string, unknown> };
+    expect(Object.keys(snapshot.tools)).toHaveLength(0);
   });
 
   it("should record tool calls when enabled", () => {
@@ -35,13 +35,13 @@ describe("Telemetry", () => {
     recordToolCall("validate_card", 50, false, 500);
     recordToolCall("generate_card", 200, true, 100);
 
-    const snapshot = getMetricsSnapshot();
-    expect(snapshot.generate_card.callCount).toBe(3);
-    expect(snapshot.generate_card.errorCount).toBe(1);
-    expect(snapshot.generate_card.avgDurationMs).toBe(333);
-    expect(snapshot.generate_card.totalOutputBytes).toBe(3600);
-    expect(snapshot.generate_card.avgOutputBytes).toBe(1200);
-    expect(snapshot.validate_card.callCount).toBe(1);
+    const snapshot = getMetricsSnapshot() as { tools: Record<string, { callCount: number; errorCount: number; avgDurationMs: number; totalOutputBytes: number; avgOutputBytes: number }> };
+    expect(snapshot.tools.generate_card.callCount).toBe(3);
+    expect(snapshot.tools.generate_card.errorCount).toBe(1);
+    expect(snapshot.tools.generate_card.avgDurationMs).toBe(333);
+    expect(snapshot.tools.generate_card.totalOutputBytes).toBe(3600);
+    expect(snapshot.tools.generate_card.avgOutputBytes).toBe(1200);
+    expect(snapshot.tools.validate_card.callCount).toBe(1);
   });
 
   it("should reset metrics", () => {
@@ -49,9 +49,11 @@ describe("Telemetry", () => {
     initTelemetry();
 
     recordToolCall("test_tool", 100);
-    expect(Object.keys(getMetricsSnapshot())).toHaveLength(1);
+    const snapshot1 = getMetricsSnapshot() as { tools: Record<string, unknown> };
+    expect(Object.keys(snapshot1.tools)).toHaveLength(1);
 
     resetMetrics();
-    expect(Object.keys(getMetricsSnapshot())).toHaveLength(0);
+    const snapshot2 = getMetricsSnapshot() as { tools: Record<string, unknown> };
+    expect(Object.keys(snapshot2.tools)).toHaveLength(0);
   });
 });
